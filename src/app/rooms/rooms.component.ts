@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
-import { Room, RoomType } from './rooms';
+import { Room, RoomType, ListMovies } from './rooms';
+import axios from 'axios';
+
 
 @Component({
   selector: 'hinv-rooms',
@@ -7,10 +9,13 @@ import { Room, RoomType } from './rooms';
   styleUrls: ['./rooms.component.scss']
 })
 
+
+
 export class RoomsComponent {
   hotelName = 'mandarin'
   numberOfRooms = 19
-
+  loading:boolean = false
+  ListMoviesData:ListMovies[] = []
   rooms:Room = {
     availableRooms: 4,
     bookedRooms: 21,
@@ -51,5 +56,40 @@ export class RoomsComponent {
   toogle(){
     this.hideRooms = this.hideRooms ? false : true
   }
+
+  async getDataFromApi(){
+    await axios({
+      method: 'get',
+      url: 'https://5f50ca542b5a260016e8bfb0.mockapi.io/api/v1/movies',
+      responseType: 'stream'
+    }).then(function (response) {
+        const data = JSON.parse(response.data)
+        console.log('data', data);
+        // data.map((list:ListMovies) => {
+        //   console.log('data', list.title)
+        // })
+        return data
+    });
+  }
+
+  async ngOnInit() {
+    console.log('1', this.ListMoviesData);
+
+    // this.getDataFromApi()
+    this.loading = true
+    const resp = await fetch('https://5f50ca542b5a260016e8bfb0.mockapi.io/api/v1/movies');
+    const data = await resp.json();
+    this.loading = false
+    console.log('data1',  this.ListMoviesData );
+    this.ListMoviesData = data
+    console.log('data2',  this.ListMoviesData );
+
+    // const respUser = await fetch('https://randomuser.me/api/');
+    // const dataUser = await respUser.json();
+    // const { results: [user] } = dataUser;
+    // console.log('dataUser', user);
+
+  }
+
 
 }

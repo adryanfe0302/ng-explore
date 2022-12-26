@@ -13,3 +13,12 @@ export interface RoomType{
   checkinTime: Date;
   checkoutTime: Date;
 }
+
+
+export interface ListMovies{
+  id: number;
+  image: string;
+  like: number;
+  showtime: string;
+  title: string;
+}

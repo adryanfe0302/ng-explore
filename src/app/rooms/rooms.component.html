@@ -41,3 +41,15 @@
 </div>
 
 <button (click)="toogle()">Toggle</button>
+
+<ng-template #loadingtrue>
+  <ul>
+    <li>loading...</li>
+  </ul>
+</ng-template>
+
+<div *ngIf="!loading; else loadingtrue">
+  <ul *ngFor="let movie of ListMoviesData; let i = index;">
+    <li>{{movie.id}}. {{movie.title}}</li>
+  </ul>
+</div>
